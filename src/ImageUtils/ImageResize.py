@@ -26,7 +26,9 @@ def imageResize(imagefile, largestside):
             return None, ExitCode.FileNotExists
         image = Image.open(imagefile)
     else:
+        # assume is already PIL type
         image = Image.open(StringIO.StringIO(imagefile.read()))
+        #image = imagefile
 
     (x, y) = image.size
 
