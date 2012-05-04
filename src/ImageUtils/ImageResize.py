@@ -32,16 +32,22 @@ def imageResize(imagefile, largestside):
 
     (x, y) = image.size
 
+    log.error("In size: %d %d" % (x, y))
+    
     # Find cleaner way to structure this
     # Is ANTIALIAS right? Maybe that messes with the color too much, os using BILINEAR
     if max(image.size) is not x:
         ratio = (y+0.0)/(x+0.0)
         smallside = largestside / ratio
-        newimage = image.resize((smallside, largestside), Image.BILINEAR)
+        newimage = image.resize((int(smallside), int(largestside)), Image.BILINEAR)
     else:
         ratio = (x+0.0)/(y+0.0)
         smallside = largestside / ratio
-        newimage = image.resize((largestside, smallside), Image.BILINEAR)
+        newimage = image.resize((int(largestside), int(smallside)), Image.BILINEAR)
     
+    (x, y) = newimage.size
+
+    log.error("Out size: %d %d" % (x, y))
+
     return newimage
 
