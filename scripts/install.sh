@@ -48,10 +48,10 @@
 ##
 
 echo "Setting paths..."
-export SURYA_DEPLOY_ROOT=/home/surya/deployed
+export SURYA_DEPLOY_ROOT=/var/www/surya_bc
 export SURYA_CODE_ROOT=`pwd`
 
-export PYTHONPATH=$SURYA_DEPLOY_ROOT/SuryaDANAFramework/src:$SURYA_DEPLOY_ROOT/SuryaIANAFramework/src:$SURYA_DEPLOY_ROOT/SuryaIANAGmailPortal/src:$SURYA_DEPLOY_ROOT/SuryaGmailPortal/src:$SURYA_DEPLOY_ROOT/SuryaWebPortal/src:$SURYA_DEPLOY_ROOT/SuryaUtils/src:$SURYA_DEPLOY_ROOT/SuryaDB/src:/usr/lib/pymodules/python2.6:/usr/lib/pymodules/python2.6/gtk-2.0:/usr/lib/python2.6:/usr/lib/python2.6/dist-packages:/usr/lib/python2.6/dist-packages/gst-0.10:/usr/lib/python2.6/dist-packages/gtk-2.0:/usr/lib/python2.6/lib-dynload:/usr/lib/python2.6/lib-old:/usr/lib/python2.6/lib-tk:/usr/lib/python2.6/plat-linux2:/usr/local/lib/python2.6/dist-packages:/usr/local/lib/python2.6/dist-packages/mongoengine-0.4-py2.6.egg:/usr/local/lib/python2.6/dist-packages/pymongo-1.9-py2.6-linux-i686.egg:/usr/local/lib/python2.6/dist-packages/django
+export PYTHONPATH=$SURYA_DEPLOY_ROOT/SuryaDANAFramework/src:$SURYA_DEPLOY_ROOT/SuryaIANAFramework/src:$SURYA_DEPLOY_ROOT/SuryaIANAGmailPortal/src:$SURYA_DEPLOY_ROOT/SuryaGmailPortal/src:$SURYA_DEPLOY_ROOT/SuryaWebPortal/src:$SURYA_DEPLOY_ROOT/SuryaUtils/src:$SURYA_DEPLOY_ROOT/SuryaDB/src:$PYTHONPATH
 
 
 ####
@@ -72,23 +72,12 @@ source set_surya_path.sh
 ## copy files excluding the exclude files unless they do not exist
 ##
 
-echo "Determining files to copy..."
-EXCLUDE_FILES="SuryaIANAGmailPortal/src/IANAGmailSettings/Settings.py SuryaWebPortal/src/SuryaWebPortal/settings.py"
-EXCLUDE_FILES_LIST="\.$"
-
-# if the file exists, put it in the exclide list
-for FILE in $EXCLUDE_FILES; do
-    if [ -a $SURYA_DEPLOY_ROOT/$FILE ]; then
-	EXCLUDE_FILES_LIST="$FILE|$EXCLUDE_FILES_LIST"
-	echo "Skipping $FILE..."
-	echo "Here is the diff -uN (left is repo, right is deployed)"
-	diff -uN $FILE $SURYA_DEPLOY_ROOT/$FILE
-    fi
-done
+echo "Checking local settings are up to date... running diff:"
+diff -uN SuryaIANAGmailPortal/src/IANAGmailSettings/Settings.py SuryaIANAGmailPortal/src/IANAGmailSettings/Settings_local.py
+diff -uN SuryaWebPortal/src/SuryaWebPortal/settings.py SuryaWebPortal/src/SuryaWebPortal/settings_local.py
 
 # add install
-EXCLUDE_FILES_LIST="(install.sh|$EXCLUDE_FILES_LIST)"
-
+EXCLUDE_FILES_LIST="(install.sh)"
 
 # fragile?
 COPY_FILES=`find -type f | grep -v -E "(\.git|.*~|#)" | grep -v -E "$EXCLUDE_FILES_LIST"`
