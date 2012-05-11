@@ -56,7 +56,7 @@ class ImageCache:
         Returns:
         String -- The Absolute file path if file was saved successfully, None otherwise
         '''
-        
+        absfilename = ""
         try:
             absfilename = self.root + "/" + filename
             fh = open(absfilename, "wb") #DEBUG
