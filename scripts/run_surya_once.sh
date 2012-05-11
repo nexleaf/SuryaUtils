@@ -10,7 +10,7 @@
 
 source /home/surya/.virtualenvs/surya_bc/bin/activate
 
-source /home/surya/deployed/set_surya_path.sh
+source /var/www/surya_bc/set_surya_path.sh
 
 cd $SURYA_DEPLOY_ROOT
 
